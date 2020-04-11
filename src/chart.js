@@ -15,7 +15,7 @@ async function asyncGet(url) {
   }
 }
 
-function generateAgeSexChart(index, labels, datasets) {
+function generateAgeSexChart(index, labels, datasets, max) {
   const ctx = document.getElementById(`ageSexChart${index + 1}`).getContext('2d');
   const charts = [];
   charts.push(new Chart(ctx, {
@@ -44,7 +44,7 @@ function generateAgeSexChart(index, labels, datasets) {
           stacked: true,
           ticks: {
             min: 0,
-            max: 45,
+            max,
             stepSize: 5,
           },
         }],
@@ -159,6 +159,7 @@ async function main() {
 
   const labels = [];
   const dataAgeSexDay = {};
+  let dataAgeSexDayMax = 0;
   const dataColor = {};
 
   age.forEach((val) => {
@@ -173,6 +174,9 @@ async function main() {
       dataAgeSexDay[ageName].man.push(val.age[ageName].man);
       dataAgeSexDay[ageName].woman.push(val.age[ageName].woman);
       dataAgeSexDay[ageName].unknown.push(val.age[ageName].unknown);
+      if (val.age[ageName].total > dataAgeSexDayMax) {
+        dataAgeSexDayMax = val.age[ageName].total;
+      }
     });
   });
 
@@ -245,8 +249,10 @@ async function main() {
     ]);
   });
 
+  const ageSexDayChartMax = Math.ceil(dataAgeSexDayMax / 10) * 10;
+
   dataAgeSexChart.forEach((val, index) => {
-    generateAgeSexChart(index, labels, val);
+    generateAgeSexChart(index, labels, val, ageSexDayChartMax);
   });
 }
 
