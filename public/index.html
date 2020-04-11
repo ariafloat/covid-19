@@ -58,19 +58,21 @@
       <section class="jumbotron text-center">
         <div class="container">
           <h1>コロナに打ち勝て！</h1>
-          <p class="lead text-muted">東京都の新型コロナウイルス感染症（COVID-19）に関する情報をまとめます。</p>
-          <p class="lead text-muted">今表示されているデータは東京都の世代別の新型コロナウイルス陽性患者数の推移です（下記オープンデータを利用）。</p>
-          <p class="lead text-muted">まだサイトの作り始めです。今後気力があれば、色々な情報を載せて行きます。</p>
-          <p>
-            <a href="https://catalog.data.metro.tokyo.lg.jp/dataset/t000010d0000000068" target="_blank" rel="nofollow noopener">東京都 新型コロナウイルス陽性患者発表詳細</a>
-          </p>
+          <p class="lead text-muted">新型コロナウイルス感染症（COVID-19）に関する以下情報をまとめます。</p>
+          <ul class="text-left">
+            <li><a href="#tokyo">東京都の世代別などの新型コロナウイルス陽性患者数の推移</a></li>
+            <ul>
+              <li><a class="text-muted" href="https://catalog.data.metro.tokyo.lg.jp/dataset/t000010d0000000068" target="_blank" rel="nofollow noopener">利用データ：東京都 新型コロナウイルス陽性患者発表詳細</a></li>
+            </ul>
+            <li><a href="#celebrity">日本 "有名人・芸能人" 陽性確認リスト</a></li>
+          </ul>
         </div>
       </section>
 
       <div class="album py-5 bg-light">
         <div class="container">
 
-          <div class="d-flex justify-content-center">
+          <div id="tokyo" class="d-flex justify-content-center">
             <div class="card shadow-sm chart-area-wrapper text-center" style="width: 508px;">
               <div class="card-body">
                 東京都 陽性患者数 (合計)
@@ -241,6 +243,30 @@
                     <small class="text-muted">縦軸：人数</small>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div id="celebrity" class="d-flex justify-content-center">
+            <div class="card shadow-sm chart-area-wrapper text-center" style="width: 100%;">
+              <div class="card-body">
+                日本 "有名人・芸能人" 陽性確認リスト
+                <div style="margin: 5px 0 10px 0;">
+                  <span id="celebrityTotal" class="font-weight-bold" style="font-size: 1.5rem;">-</span> 人
+                </div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">名前</th>
+                      <th scope="col">職種</th>
+                      <th scope="col">感染確認日</th>
+                      <th scope="col">誕生日</th>
+                    </tr>
+                  </thead>
+                  <tbody id="celebrityList">
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

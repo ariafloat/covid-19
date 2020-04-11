@@ -5,16 +5,6 @@ import getRandomColor from './color';
 
 const age = ['10歳未満', '10代', '20代', '30代', '40代', '50代', '60代', '70代', '80代', '90代', '不明'];
 
-async function asyncGet(url) {
-  try {
-    const res = await axios.get(url);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-}
-
 function generateAgeSexChart(index, labels, datasets, max) {
   const ctx = document.getElementById(`ageSexChart${index + 1}`).getContext('2d');
   const charts = [];
@@ -77,8 +67,8 @@ function pieChart(id, title, labels, datasets) {
 }
 
 async function main() {
-  const tokyoCovidDataCsv = await asyncGet('data/130001_tokyo_covid19_patients.csv');
-  const tokyoCovidData = csvParse(tokyoCovidDataCsv, { columns: true, trim: true });
+  const tokyoCovidDataCsv = await axios.get('data/130001_tokyo_covid19_patients.csv');
+  const tokyoCovidData = csvParse(tokyoCovidDataCsv.data, { columns: true, trim: true });
 
   const dateExtract = [];
   tokyoCovidData.forEach((val) => {
