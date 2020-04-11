@@ -40,3 +40,9 @@ footer p {
 .chart-area-wrapper {
   margin-bottom: 10px;
 }
+
+@media (max-width: 568px) {
+  .font-sm {
+    font-size: 0.8rem;
+  }
+}
