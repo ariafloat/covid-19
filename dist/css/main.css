@@ -26,10 +26,30 @@ footer p {
   margin-bottom: .25rem;
 }
 
-.none-toppage, .none-toppage:hover{
+.none-toppage, .none-toppage:hover {
   color: #878787;
   text-decoration: none;
 } 
+
+.d-ib {
+  display: inline-block;
+}
+
+@media (max-width: 360px) {
+  .header-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .header-title {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 460px) {
+  .title {
+    font-size: 1.8rem;
+  }
+}
 
 .chart-area-wrapper {
   margin-bottom: 10px;

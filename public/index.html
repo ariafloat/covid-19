@@ -43,8 +43,8 @@
       <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container d-flex justify-content-between">
           <a href="https://covid19.ariafloat.com/" class="navbar-brand d-flex align-items-center">
-            <img src="../img/covid-19-icon.png" alt="アイコン" width="25" height="25" style="margin-right: 5px;">
-            <strong>コロナに打ち勝て！</strong>
+            <img class="header-icon" src="../img/covid-19-icon.png" alt="アイコン" width="25" height="25" style="margin-right: 5px;">
+            <span class="font-weight-bold header-title">コロナに打ち勝て！</span>
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -57,7 +57,7 @@
 
       <section class="jumbotron text-center">
         <div class="container">
-          <h1>コロナに打ち勝て！</h1>
+          <h1 class="title">コロナに打ち勝て！</h1>
           <p class="lead text-muted">新型コロナウイルス感染症（COVID-19）に関する以下情報をまとめます。</p>
           <ul class="text-left">
             <li><a href="#tokyo">東京都の世代別などの新型コロナウイルス陽性患者数の推移</a></li>
@@ -91,9 +91,9 @@
                 <canvas id="sexChart" height="300px"></canvas>
                 <div class="card-body">
                   <small class="card-text">
-                    男性：<span id="sexChartManCnt">-</span>人,&nbsp;&nbsp;
-                    女性：<span id="sexChartWomanCnt">-</span>人,&nbsp;&nbsp;
-                    不明：<span id="sexChartUnknownCnt">-</span>人
+                    <span class="d-ib mr-1">男性：<span id="sexChartManCnt">-</span>人,</span>
+                    <span class="d-ib mr-1">女性：<span id="sexChartWomanCnt">-</span>人,</span>
+                    <span class="d-ib">不明：<span id="sexChartUnknownCnt">-</span>人</span>
                   </small>
                 </div>
               </div>
@@ -103,17 +103,17 @@
                 <canvas id="ageChart" height="300px"></canvas>
                 <div class="card-body">
                   <small class="card-text">
-                    10歳未満：<span id="ageChartCnt1">-</span>人,&nbsp;&nbsp;
-                    10代：<span id="ageChartCnt2">-</span>人,&nbsp;&nbsp;
-                    20代：<span id="ageChartCnt3">-</span>人,&nbsp;&nbsp;
-                    30代：<span id="ageChartCnt4">-</span>人,<br>
-                    40代：<span id="ageChartCnt5">-</span>人,&nbsp;&nbsp;
-                    50代：<span id="ageChartCnt6">-</span>人,&nbsp;&nbsp;
-                    60代：<span id="ageChartCnt7">-</span>人,&nbsp;&nbsp;
-                    70代：<span id="ageChartCnt8">-</span>人,<br>
-                    80代：<span id="ageChartCnt9">-</span>人,&nbsp;&nbsp;
-                    90代：<span id="ageChartCnt10">-</span>人,&nbsp;&nbsp;
-                    不明：<span id="ageChartCnt11">-</span>人
+                    <span class="d-ib mr-1">10歳未満：<span id="ageChartCnt1">-</span>人,</span>
+                    <span class="d-ib mr-1">10代：<span id="ageChartCnt2">-</span>人,</span>
+                    <span class="d-ib mr-1">20代：<span id="ageChartCnt3">-</span>人,</span>
+                    <span class="d-ib mr-1">30代：<span id="ageChartCnt4">-</span>人,</span>
+                    <span class="d-ib mr-1">40代：<span id="ageChartCnt5">-</span>人,</span>
+                    <span class="d-ib mr-1">50代：<span id="ageChartCnt6">-</span>人,</span>
+                    <span class="d-ib mr-1">60代：<span id="ageChartCnt7">-</span>人,</span>
+                    <span class="d-ib mr-1">70代：<span id="ageChartCnt8">-</span>人,</span>
+                    <span class="d-ib mr-1">80代：<span id="ageChartCnt9">-</span>人,</span>
+                    <span class="d-ib mr-1">90代：<span id="ageChartCnt10">-</span>人</span>
+                    <span class="d-ib">不明：<span id="ageChartCnt11">-</span>人</span>
                   </small>
                 </div>
               </div>
