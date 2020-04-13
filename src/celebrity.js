@@ -2,6 +2,7 @@ import axios from 'axios';
 
 async function main() {
   const resCelebrity = await axios.get('data/celebrity.json');
+  // const resCelebrity = await axios.get(`data/celebrity.json?timestamp=${new Date().getTime()}`);
   const celebrityList = resCelebrity.data.data;
 
   let dom = '';
