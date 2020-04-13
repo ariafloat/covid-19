@@ -1,6 +1,6 @@
 import Chart from 'chart.js';
-import axios from 'axios';
 import csvParse from 'csv-parse/lib/sync';
+import comm from './comm';
 import getRandomColor from './color';
 
 const age = ['10歳未満', '10代', '20代', '30代', '40代', '50代', '60代', '70代', '80代', '90代', '100歳以上', '不明'];
@@ -67,9 +67,8 @@ function pieChart(id, title, labels, datasets) {
 }
 
 async function main() {
-  const tokyoCovidDataCsv = await axios.get('data/130001_tokyo_covid19_patients.csv');
-  // const tokyoCovidDataCsv = await axios.get(`data/130001_tokyo_covid19_patients.csv?timestamp=${new Date().getTime()}`);
-  const tokyoCovidData = csvParse(tokyoCovidDataCsv.data, { columns: true, trim: true });
+  const tokyoCovidDataCsv = await comm.get('data/130001_tokyo_covid19_patients.csv');
+  const tokyoCovidData = csvParse(tokyoCovidDataCsv, { columns: true, trim: true });
 
   const dateExtract = [];
   tokyoCovidData.forEach((val) => {

@@ -1,9 +1,8 @@
-import axios from 'axios';
+import comm from './comm';
 
 async function main() {
-  const resCelebrity = await axios.get('data/celebrity.json');
-  // const resCelebrity = await axios.get(`data/celebrity.json?timestamp=${new Date().getTime()}`);
-  const celebrityList = resCelebrity.data.data;
+  const resCelebrity = await comm.get('data/celebrity.json');
+  const celebrityList = resCelebrity.data;
 
   let dom = '';
   celebrityList.forEach((val) => {
