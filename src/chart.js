@@ -182,6 +182,7 @@ async function main() {
     brown: 'rgb(139, 69, 19)',
     yellowGreen: 'rgb(181, 207, 4)',
     indigo: 'rgb(63, 81, 181)',
+    reddishPurple: 'rgb(136, 34, 85)',
     blueGrey: 'rgb(38, 49, 55)',
   };
 
@@ -198,7 +199,7 @@ async function main() {
   document.getElementById('sexChartUnknownCnt').innerHTML = totalSexDataObj.unknown.toLocaleString();
   pieChart('sexChart', '性別', ['男性', '女性', '不明'], dataSexChart);
 
-  const ageChartColor = ['blue', 'red', 'orange', 'yellow', 'yellowGreen', 'green', 'indigo', 'purple', 'brown', 'blueGrey', 'grey'];
+  const ageChartColor = ['blue', 'red', 'orange', 'yellow', 'yellowGreen', 'green', 'indigo', 'purple', 'brown', 'reddishPurple', 'blueGrey', 'grey'];
   const dataAgeChart = [{
     backgroundColor: ageChartColor.map((val) => color(chartColor[val]).alpha(1).rgbString()),
     data: age.map((val) => totalAgeDataObj[val]),
