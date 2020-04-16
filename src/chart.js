@@ -1,12 +1,11 @@
 import Chart from 'chart.js';
 import csvParse from 'csv-parse/lib/sync';
 import comm from './comm';
-import getRandomColor from './color';
 
 const age = ['10歳未満', '10代', '20代', '30代', '40代', '50代', '60代', '70代', '80代', '90代', '100歳以上', '不明'];
 
-function generateAgeSexChart(index, labels, datasets, max) {
-  const ctx = document.getElementById(`ageSexChart${index + 1}`).getContext('2d');
+function barChart(id, title, labels, datasets, max) {
+  const ctx = document.getElementById(id).getContext('2d');
   const charts = [];
   charts.push(new Chart(ctx, {
     type: 'bar',
@@ -18,7 +17,7 @@ function generateAgeSexChart(index, labels, datasets, max) {
       responsive: true,
       title: {
         display: true,
-        text: age[index],
+        text: title,
       },
       legend: {
         position: 'top',
@@ -35,7 +34,6 @@ function generateAgeSexChart(index, labels, datasets, max) {
           ticks: {
             min: 0,
             max,
-            stepSize: 5,
           },
         }],
       },
@@ -126,7 +124,9 @@ async function main() {
   const totalDataObj = {};
   const totalSexDataObj = { man: 0, woman: 0, unknown: 0 };
   dateArray.forEach((val) => {
-    totalDataObj[val] = { age: {} };
+    totalDataObj[val] = {
+      total: 0, man: 0, woman: 0, unknown: 0, age: {},
+    };
     age.forEach((ele) => {
       totalDataObj[val].age[ele] = {
         total: 0, man: 0, woman: 0, unknown: 0,
@@ -144,38 +144,41 @@ async function main() {
   tokyoCovidData.forEach((val) => {
     const ageName = (val['患者_年代'] === '不明' || val['患者_年代'] === '調査中') ? '不明' : val['患者_年代'];
     totalAgeDataObj[ageName].total += 1;
+    totalDataObj[val['公表_年月日']].total += 1;
     totalDataObj[val['公表_年月日']].age[ageName].total += 1;
     switch (val['患者_性別']) {
+      case '男':
       case '男性':
         totalSexDataObj.man += 1;
         totalAgeDataObj[ageName].man += 1;
+        totalDataObj[val['公表_年月日']].man += 1;
         totalDataObj[val['公表_年月日']].age[ageName].man += 1;
         break;
-      case '男':
-        totalSexDataObj.man += 1;
-        totalAgeDataObj[ageName].man += 1;
-        totalDataObj[val['公表_年月日']].age[ageName].man += 1;
-        break;
+      case '女':
       case '女性':
         totalSexDataObj.woman += 1;
         totalAgeDataObj[ageName].woman += 1;
-        totalDataObj[val['公表_年月日']].age[ageName].woman += 1;
-        break;
-      case '女':
-        totalSexDataObj.woman += 1;
-        totalAgeDataObj[ageName].woman += 1;
+        totalDataObj[val['公表_年月日']].woman += 1;
         totalDataObj[val['公表_年月日']].age[ageName].woman += 1;
         break;
       default:
         totalSexDataObj.unknown += 1;
         totalAgeDataObj[ageName].unknown += 1;
+        totalDataObj[val['公表_年月日']].unknown += 1;
         totalDataObj[val['公表_年月日']].age[ageName].unknown += 1;
     }
   });
 
   const totalData = [];
   Object.keys(totalDataObj).forEach((key) => {
-    totalData.push({ date: key, age: totalDataObj[key].age });
+    totalData.push({
+      date: key,
+      total: totalDataObj[key].total,
+      man: totalDataObj[key].man,
+      woman: totalDataObj[key].woman,
+      unknown: totalDataObj[key].unknown,
+      age: totalDataObj[key].age,
+    });
   });
 
   totalData.sort((a, b) => {
@@ -184,18 +187,24 @@ async function main() {
   });
 
   const labels = [];
+  const dataSexDay = { man: [], woman: [], unknown: [] };
   const dataAgeSexDay = {};
   let dataAgeSexDayMax = 0;
-  const dataColor = {};
+  let dataSexDayMax = 0;
 
   age.forEach((val) => {
     dataAgeSexDay[val] = { man: [], woman: [], unknown: [] };
-    dataColor[val] = getRandomColor();
   });
 
   totalData.forEach((val) => {
     const labelDate = val.date.split('-');
     labels.push(`${Number(labelDate[1])}/${Number(labelDate[2])}/${labelDate[0].slice(-2)}`);
+    dataSexDay.man.push(val.man);
+    dataSexDay.woman.push(val.woman);
+    dataSexDay.unknown.push(val.unknown);
+    if (val.total > dataSexDayMax) {
+      dataSexDayMax = val.total;
+    }
     age.forEach((ageName) => {
       dataAgeSexDay[ageName].man.push(val.age[ageName].man);
       dataAgeSexDay[ageName].woman.push(val.age[ageName].woman);
@@ -221,6 +230,35 @@ async function main() {
     reddishPurple: 'rgb(136, 34, 85)',
     blueGrey: 'rgb(38, 49, 55)',
   };
+
+  const dataTotalSexChart = [
+    {
+      label: '男性',
+      backgroundColor: color(chartColor.blue).alpha(0.5).rgbString(),
+      borderColor: color(chartColor.blue).alpha(1).rgbString(),
+      borderWidth: 1,
+      data: dataSexDay.man,
+      fill: false,
+    },
+    {
+      label: '女性',
+      backgroundColor: color(chartColor.red).alpha(0.5).rgbString(),
+      borderColor: color(chartColor.red).alpha(1).rgbString(),
+      borderWidth: 1,
+      data: dataSexDay.woman,
+      fill: false,
+    },
+    {
+      label: '不明',
+      backgroundColor: color(chartColor.grey).alpha(0.5).rgbString(),
+      borderColor: color(chartColor.grey).alpha(1).rgbString(),
+      borderWidth: 1,
+      data: dataSexDay.unknown,
+      fill: false,
+    },
+  ];
+  const sexDayChartMax = Math.ceil(dataSexDayMax / 10) * 10;
+  barChart('totalSexChart', '陽性患者数', labels, dataTotalSexChart, sexDayChartMax);
 
   const dataAgeSexRadarChart = [
     {
@@ -303,7 +341,7 @@ async function main() {
   const ageSexDayChartMax = Math.ceil(dataAgeSexDayMax / 10) * 10;
 
   dataAgeSexChart.forEach((val, index) => {
-    generateAgeSexChart(index, labels, val, ageSexDayChartMax);
+    barChart(`ageSexChart${index + 1}`, age[index], labels, val, ageSexDayChartMax);
   });
 }
 
