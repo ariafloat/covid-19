@@ -61,7 +61,36 @@ function pieChart(id, title, labels, datasets) {
       legend: {
         position: 'top',
       },
+    },
+  }));
+}
 
+function radarChart(id, title, labels, datasets) {
+  const ctx = document.getElementById(id).getContext('2d');
+  const charts = [];
+  charts.push(new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels,
+      datasets,
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: title,
+      },
+      legend: {
+        position: 'top',
+      },
+      scale: {
+        ticks: {
+          beginAtZero: true,
+        },
+      },
+      tooltips: {
+        mode: 'index',
+      },
     },
   }));
 }
@@ -107,32 +136,39 @@ async function main() {
 
   const totalAgeDataObj = {};
   age.forEach((val) => {
-    totalAgeDataObj[val] = 0;
+    totalAgeDataObj[val] = {
+      total: 0, man: 0, woman: 0, unknown: 0,
+    };
   });
 
   tokyoCovidData.forEach((val) => {
     const ageName = (val['患者_年代'] === '不明' || val['患者_年代'] === '調査中') ? '不明' : val['患者_年代'];
-    totalAgeDataObj[ageName] += 1;
+    totalAgeDataObj[ageName].total += 1;
     totalDataObj[val['公表_年月日']].age[ageName].total += 1;
     switch (val['患者_性別']) {
       case '男性':
         totalSexDataObj.man += 1;
+        totalAgeDataObj[ageName].man += 1;
         totalDataObj[val['公表_年月日']].age[ageName].man += 1;
         break;
       case '男':
         totalSexDataObj.man += 1;
+        totalAgeDataObj[ageName].man += 1;
         totalDataObj[val['公表_年月日']].age[ageName].man += 1;
         break;
       case '女性':
         totalSexDataObj.woman += 1;
+        totalAgeDataObj[ageName].woman += 1;
         totalDataObj[val['公表_年月日']].age[ageName].woman += 1;
         break;
       case '女':
         totalSexDataObj.woman += 1;
+        totalAgeDataObj[ageName].woman += 1;
         totalDataObj[val['公表_年月日']].age[ageName].woman += 1;
         break;
       default:
         totalSexDataObj.unknown += 1;
+        totalAgeDataObj[ageName].unknown += 1;
         totalDataObj[val['公表_年月日']].age[ageName].unknown += 1;
     }
   });
@@ -186,6 +222,31 @@ async function main() {
     blueGrey: 'rgb(38, 49, 55)',
   };
 
+  const dataAgeSexRadarChart = [
+    {
+      label: '男性',
+      backgroundColor: color(chartColor.blue).alpha(0.2).rgbString(),
+      borderColor: color(chartColor.blue).alpha(1).rgbString(),
+      pointBackgroundColor: color(chartColor.blue).alpha(1).rgbString(),
+      data: age.map((val) => totalAgeDataObj[val].man),
+    },
+    {
+      label: '女性',
+      backgroundColor: color(chartColor.red).alpha(0.2).rgbString(),
+      borderColor: color(chartColor.red).alpha(1).rgbString(),
+      pointBackgroundColor: color(chartColor.red).alpha(1).rgbString(),
+      data: age.map((val) => totalAgeDataObj[val].woman),
+    },
+    {
+      label: '不明',
+      backgroundColor: color(chartColor.grey).alpha(0.2).rgbString(),
+      borderColor: color(chartColor.grey).alpha(1).rgbString(),
+      pointBackgroundColor: color(chartColor.grey).alpha(1).rgbString(),
+      data: age.map((val) => totalAgeDataObj[val].unknown),
+    },
+  ];
+  radarChart('ageSexChart', '年代別 & 性別', age, dataAgeSexRadarChart);
+
   const dataSexChart = [{
     backgroundColor: [
       color(chartColor.blue).alpha(1).rgbString(),
@@ -202,7 +263,7 @@ async function main() {
   const ageChartColor = ['blue', 'red', 'orange', 'yellow', 'yellowGreen', 'green', 'indigo', 'purple', 'brown', 'reddishPurple', 'blueGrey', 'grey'];
   const dataAgeChart = [{
     backgroundColor: ageChartColor.map((val) => color(chartColor[val]).alpha(1).rgbString()),
-    data: age.map((val) => totalAgeDataObj[val]),
+    data: age.map((val) => totalAgeDataObj[val].total),
   }];
   dataAgeChart[0].data.forEach((val, index) => {
     document.getElementById(`ageChartCnt${index + 1}`).innerHTML = val.toLocaleString();
@@ -210,7 +271,6 @@ async function main() {
   pieChart('ageChart', '年代別', age, dataAgeChart);
 
   const dataAgeSexChart = [];
-
   age.forEach((val) => {
     dataAgeSexChart.push([
       {
