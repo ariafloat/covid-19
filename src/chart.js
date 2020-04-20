@@ -142,7 +142,7 @@ async function main() {
   });
 
   tokyoCovidData.forEach((val) => {
-    const ageName = (val['患者_年代'] === '不明' || val['患者_年代'] === '調査中') ? '不明' : val['患者_年代'];
+    const ageName = (val['患者_年代'] === '不明' || val['患者_年代'] === '調査中' || val['患者_年代'] === '-') ? '不明' : val['患者_年代'];
     totalAgeDataObj[ageName].total += 1;
     totalDataObj[val['公表_年月日']].total += 1;
     totalDataObj[val['公表_年月日']].age[ageName].total += 1;
