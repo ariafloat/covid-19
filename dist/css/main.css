@@ -35,6 +35,14 @@ footer p {
   display: inline-block;
 }
 
+.title {
+  padding-bottom: 8px;
+}
+
+.overview {
+  font-size: 1.1rem;
+}
+
 @media (max-width: 360px) {
   .header-icon {
     width: 20px;
@@ -48,6 +56,9 @@ footer p {
 @media (max-width: 460px) {
   .title {
     font-size: 1.8rem;
+  }
+  .overview {
+    font-size: 1rem;
   }
 }
 
