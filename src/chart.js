@@ -189,11 +189,13 @@ async function main() {
   const labels = [];
   const dataSexDay = { man: [], woman: [], unknown: [] };
   const dataAgeSexDay = {};
-  let dataAgeSexDayMax = 0;
+  // let dataAgeSexDayMax = 0;
   let dataSexDayMax = 0;
 
   age.forEach((val) => {
-    dataAgeSexDay[val] = { man: [], woman: [], unknown: [] };
+    dataAgeSexDay[val] = {
+      man: [], woman: [], unknown: [], max: 0,
+    };
   });
 
   totalData.forEach((val) => {
@@ -209,8 +211,13 @@ async function main() {
       dataAgeSexDay[ageName].man.push(val.age[ageName].man);
       dataAgeSexDay[ageName].woman.push(val.age[ageName].woman);
       dataAgeSexDay[ageName].unknown.push(val.age[ageName].unknown);
+      /*
       if (val.age[ageName].total > dataAgeSexDayMax) {
         dataAgeSexDayMax = val.age[ageName].total;
+      }
+      */
+      if (val.age[ageName].total > dataAgeSexDay[ageName].max) {
+        dataAgeSexDay[ageName].max = val.age[ageName].total;
       }
     });
   });
@@ -338,10 +345,10 @@ async function main() {
     ]);
   });
 
-  const ageSexDayChartMax = Math.ceil(dataAgeSexDayMax / 10) * 10;
+  // const ageSexDayChartMax = Math.ceil(dataAgeSexDayMax / 10) * 10;
 
   dataAgeSexChart.forEach((val, index) => {
-    barChart(`ageSexChart${index + 1}`, age[index], labels, val, ageSexDayChartMax);
+    barChart(`ageSexChart${index + 1}`, age[index], labels, val, Math.ceil(dataAgeSexDay[age[index]].max / 10) * 10);
   });
 }
 
